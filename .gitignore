@@ -1,0 +1,9 @@
+# build output
+*.piplug
+dist/
+
+# editor / OS noise
+.DS_Store
+*.log
+.idea/
+.vscode/

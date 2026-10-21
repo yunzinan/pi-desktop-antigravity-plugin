@@ -1,0 +1,304 @@
+{
+  "schemaVersion": 1,
+  "id": "io.github.yunzinan.pi-desktop-antigravity",
+  "name": "Antigravity for PI-Desktop",
+  "version": "0.12.0",
+  "description": "Use Google Antigravity / Cloud Code Assist models (Gemini, Claude, GPT-OSS) as a native PI-Desktop provider on your own Google account quota: chat, in-chat image generation, grounded web search, and quota monitoring.",
+  "author": "yunzinan",
+  "homepage": "https://github.com/yunzinan/pi-desktop-antigravity-plugin",
+  "repository": "https://github.com/yunzinan/pi-desktop-antigravity-plugin",
+  "main": "main.cjs",
+  "permissions": [
+    "agent.extension",
+    "ui.panel",
+    "ui.view",
+    "provider.register",
+    "provider.oauth"
+  ],
+  "contributes": {
+    "agentExtensions": [
+      "src/index.ts",
+      "src/features/google-search.ts",
+      "src/features/generate-image.ts"
+    ],
+    "commands": [
+      {
+        "id": "antigravity.openPanel",
+        "title": "Antigravity: open panel",
+        "category": "Agent",
+        "keywords": [
+          "antigravity",
+          "google",
+          "sign in",
+          "login",
+          "oauth",
+          "gemini",
+          "cloud code",
+          "panel"
+        ]
+      },
+      {
+        "id": "antigravity.signIn",
+        "title": "Antigravity: open Google sign-in",
+        "category": "Agent",
+        "keywords": [
+          "antigravity",
+          "google",
+          "sign in",
+          "login",
+          "oauth",
+          "cloud code",
+          "gemini"
+        ]
+      },
+      {
+        "id": "antigravity.signOut",
+        "title": "Antigravity: sign out",
+        "category": "Agent",
+        "keywords": [
+          "antigravity",
+          "google",
+          "sign out",
+          "logout",
+          "oauth"
+        ]
+      }
+    ],
+    "views": [
+      {
+        "id": "antigravity",
+        "entry": "renderer/index.html",
+        "icon": "key",
+        "order": 50,
+        "title": {
+          "en": "Antigravity",
+          "zh-CN": "Antigravity"
+        }
+      }
+    ],
+    "providers": [
+      {
+        "id": "antigravity",
+        "name": "Antigravity",
+        "category": "Google",
+        "description": "Google Antigravity / Cloud Code Assist models (Gemini, Claude, GPT-OSS) on your Google account quota.",
+        "authKind": "oauth",
+        "protocol": "openai_compatible",
+        "baseUrl": "http://127.0.0.1:51122/v1",
+        "oauth": {
+          "loginLabel": "Sign in with Google",
+          "isSubscription": true
+        },
+        "models": [
+          {
+            "id": "gemini-4-argon-medium",
+            "name": "Gemini 4 Argon (Medium)",
+            "contextWindow": 1048576,
+            "maxTokens": 65536,
+            "thinkingLevels": [
+              "off",
+              "low",
+              "medium",
+              "high"
+            ]
+          },
+          {
+            "id": "gemini-4-argon-high",
+            "name": "Gemini 4 Argon (High)",
+            "contextWindow": 1048576,
+            "maxTokens": 65536,
+            "thinkingLevels": [
+              "off",
+              "low",
+              "medium",
+              "high"
+            ]
+          },
+          {
+            "id": "gemini-4-argon-low",
+            "name": "Gemini 4 Argon (Low)",
+            "contextWindow": 1048576,
+            "maxTokens": 65536,
+            "thinkingLevels": [
+              "off",
+              "low",
+              "medium",
+              "high"
+            ]
+          },
+          {
+            "id": "gemini-3.8-flash-high",
+            "name": "Gemini 3.8 Flash (High)",
+            "contextWindow": 1048576,
+            "maxTokens": 65536,
+            "thinkingLevels": [
+              "off",
+              "low",
+              "medium",
+              "high"
+            ]
+          },
+          {
+            "id": "gemini-3.8-flash-medium",
+            "name": "Gemini 3.8 Flash (Medium)",
+            "contextWindow": 1048576,
+            "maxTokens": 65536,
+            "thinkingLevels": [
+              "off",
+              "low",
+              "medium",
+              "high"
+            ]
+          },
+          {
+            "id": "gemini-3.8-flash-low",
+            "name": "Gemini 3.8 Flash (Low)",
+            "contextWindow": 1048576,
+            "maxTokens": 65536,
+            "thinkingLevels": [
+              "off",
+              "low",
+              "medium",
+              "high"
+            ]
+          },
+          {
+            "id": "claude-opus-5-5-low",
+            "name": "Claude Opus 5.5 (Low)",
+            "contextWindow": 200000,
+            "maxTokens": 64000,
+            "thinkingLevels": [
+              "off",
+              "low",
+              "medium",
+              "high"
+            ]
+          },
+          {
+            "id": "claude-opus-5-5-medium",
+            "name": "Claude Opus 5.5 (Medium)",
+            "contextWindow": 200000,
+            "maxTokens": 64000,
+            "thinkingLevels": [
+              "off",
+              "low",
+              "medium",
+              "high"
+            ]
+          },
+          {
+            "id": "claude-opus-5-5-high",
+            "name": "Claude Opus 5.5 (High)",
+            "contextWindow": 200000,
+            "maxTokens": 64000,
+            "thinkingLevels": [
+              "off",
+              "low",
+              "medium",
+              "high"
+            ]
+          },
+          {
+            "id": "claude-sonnet-5-5-low",
+            "name": "Claude Sonnet 5.5 (Low)",
+            "contextWindow": 200000,
+            "maxTokens": 64000,
+            "thinkingLevels": [
+              "off",
+              "low",
+              "medium",
+              "high"
+            ]
+          },
+          {
+            "id": "claude-sonnet-5-5-medium",
+            "name": "Claude Sonnet 5.5 (Medium)",
+            "contextWindow": 200000,
+            "maxTokens": 64000,
+            "thinkingLevels": [
+              "off",
+              "low",
+              "medium",
+              "high"
+            ]
+          },
+          {
+            "id": "claude-sonnet-5-5-high",
+            "name": "Claude Sonnet 5.5 (High)",
+            "contextWindow": 200000,
+            "maxTokens": 64000,
+            "thinkingLevels": [
+              "off",
+              "low",
+              "medium",
+              "high"
+            ]
+          },
+          {
+            "id": "gpt-oss-120b-medium",
+            "name": "GPT-OSS 120B (Medium)",
+            "contextWindow": 128000,
+            "maxTokens": 32768,
+            "thinkingLevels": [
+              "off"
+            ]
+          },
+          {
+            "id": "gemini-3.1-flash-image",
+            "name": "Gemini 3.1 Flash Image",
+            "contextWindow": 32768,
+            "maxTokens": 8192,
+            "type": "image",
+            "input": [
+              "text",
+              "image"
+            ],
+            "output": [
+              "image",
+              "text"
+            ]
+          }
+        ],
+        "apiStyle": "chat_completions"
+      }
+    ]
+  },
+  "capabilities": [
+    "agentExtension",
+    "panel",
+    "views",
+    "commands",
+    "providers"
+  ],
+  "ui": {
+    "panel": "renderer/index.html",
+    "title": {
+      "en": "Antigravity",
+      "zh-CN": "Antigravity"
+    },
+    "width": 520,
+    "height": 460
+  },
+  "license": "MIT",
+  "engines": {
+    "piDesktop": ">=0.20.1"
+  },
+  "categories": [
+    "developer-tools",
+    "integrations"
+  ],
+  "safetyNotes": "Runs a local OpenAI-compatible proxy on 127.0.0.1:51122 that translates between PI-Desktop and Google's Cloud Code Assist API, so the app never talks to Google directly. Signs in with Google OAuth (PKCE, loopback redirect) and keeps tokens in ~/.pi/agent; the app's own credential is preferred and refreshed by the host. Reads and writes only inside the plugin package and ~/.pi/agent (account store, generated images). No telemetry, no third-party endpoints: all network traffic goes to Google APIs through your system proxy.",
+  "changelog": "0.12.0 — first public release.\n- Native provider for Antigravity / Cloud Code Assist (Gemini 4 Argon, Gemini 3.8 Flash, Claude Opus/Sonnet 5.5, GPT-OSS 120B) with per-effort thinking levels.\n- In-chat image generation: intercepts the built-in GenerateImages tool (whose oauth-provider path is closed) and renders results inline as markdown.\n- In-chat grounded web search with citations.\n- Sidebar panel: account status, quota buckets, manual image/search, model discovery.\n- Automatic token refresh and multi-endpoint failover.",
+  "i18n": {
+    "en": {
+      "name": "Antigravity for PI-Desktop",
+      "description": "Use Google Antigravity / Cloud Code Assist models (Gemini, Claude, GPT-OSS) as a native PI-Desktop provider on your own Google account quota: chat, in-chat image generation, grounded web search, and quota monitoring.",
+      "safetyNotes": "Runs a local OpenAI-compatible proxy on 127.0.0.1:51122 that translates between PI-Desktop and Google's Cloud Code Assist API, so the app never talks to Google directly. Signs in with Google OAuth (PKCE, loopback redirect) and keeps tokens in ~/.pi/agent; the app's own credential is preferred and refreshed by the host. Reads and writes only inside the plugin package and ~/.pi/agent (account store, generated images). No telemetry, no third-party endpoints: all network traffic goes to Google APIs through your system proxy."
+    },
+    "zh-CN": {
+      "name": "Antigravity for PI-Desktop",
+      "description": "把 Google Antigravity / Cloud Code Assist 模型（Gemini、Claude、GPT-OSS）接成 PI-Desktop 的原生 provider，走你自己的 Google 账号配额：对话、会话内生图、联网搜索、配额监控。",
+      "safetyNotes": "在 127.0.0.1:51122 起一个本地 OpenAI 兼容代理，在 PI-Desktop 与 Google Cloud Code Assist API 之间做协议转换，App 不直连 Google。使用 Google OAuth（PKCE + 本地回环）登录，令牌存放在 ~/.pi/agent；宿主自带的凭据优先并由宿主刷新。只读写插件包内目录与 ~/.pi/agent（账号存储、生成的图片）。无遥测、无第三方端点，全部流量经系统代理发往 Google API。"
+    }
+  }
+}

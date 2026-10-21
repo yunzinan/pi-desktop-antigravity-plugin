@@ -1,0 +1,484 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="pi-plugin-chrome" content="v2" />
+    <title>Antigravity</title>
+    <style>
+      :root {
+        color-scheme: dark;
+        --bg: #181818;
+        --surface: #212121;
+        --surface-hover: color-mix(in oklab, #ffffff 6%, transparent);
+        --fg: #ffffff;
+        --muted: color-mix(in oklab, #ffffff 52%, transparent);
+        --border: color-mix(in oklab, #ffffff 10%, transparent);
+        --accent: #ffffff;
+        --ok: color-mix(in oklab, #34d399 80%, var(--fg));
+        --warn: color-mix(in oklab, #fbbf24 80%, var(--fg));
+      }
+      :root[data-base="light"] {
+        color-scheme: light;
+        --bg: #ffffff;
+        --surface: #f9f9f9;
+        --surface-hover: color-mix(in oklab, #1a1c1f 5%, transparent);
+        --fg: #1a1c1f;
+        --muted: #5d5d5d;
+        --border: color-mix(in oklab, #1a1c1f 10%, transparent);
+        --accent: #1a1c1f;
+        --ok: #047857;
+        --warn: #b45309;
+      }
+      * { box-sizing: border-box; }
+      body {
+        margin: 0;
+        min-height: 100vh;
+        padding: var(--pi-plugin-titlebar-height, 46px) 16px 16px;
+        overflow: auto;
+        font: 13px/1.5 -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+        background: var(--bg);
+        color: var(--fg);
+      }
+      .card {
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        padding: 16px;
+        background: var(--surface);
+      }
+      .card + .card { margin-top: 12px; }
+      h2 { margin: 0 0 4px; font-size: 15px; font-weight: 560; letter-spacing: -0.02em; }
+      p { margin: 0; color: var(--muted); }
+      p + p { margin-top: 8px; }
+      .status {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-weight: 560;
+      }
+      .dot {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: var(--warn);
+        flex: none;
+      }
+      .dot.on { background: var(--ok); }
+      .row { display: flex; gap: 8px; margin-top: 12px; }
+      button {
+        flex: 1;
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        padding: 8px 12px;
+        background: var(--accent);
+        color: var(--bg);
+        cursor: pointer;
+        font: inherit;
+        font-weight: 560;
+        transition: opacity 150ms ease;
+      }
+      button.secondary {
+        background: transparent;
+        color: var(--fg);
+      }
+      button:hover { opacity: 0.82; }
+      button:disabled { opacity: 0.4; cursor: default; }
+      textarea {
+        width: 100%;
+        margin-top: 12px;
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        padding: 8px 10px;
+        background: var(--bg);
+        color: var(--fg);
+        font: 12px/1.4 ui-monospace, SFMono-Regular, Menlo, monospace;
+        resize: vertical;
+        min-height: 62px;
+      }
+      textarea:focus { outline: 2px solid color-mix(in oklab, var(--accent) 45%, transparent); outline-offset: -1px; }
+      ol { margin: 8px 0 0; padding-left: 20px; color: var(--muted); }
+      li + li { margin-top: 6px; }
+      code {
+        font: 11px/1.3 ui-monospace, SFMono-Regular, Menlo, monospace;
+        background: color-mix(in oklab, var(--fg) 8%, transparent);
+        padding: 1px 4px;
+        border-radius: 4px;
+        word-break: break-all;
+      }
+      .error { color: var(--warn); margin-top: 10px; white-space: pre-wrap; }
+      .hidden { display: none; }
+      .quota { margin-top: 12px; border-top: 1px solid var(--border); padding-top: 12px; }
+      .quota h3 { margin: 0 0 2px; font-size: 11px; font-weight: 620; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); }
+      .quota .group { margin-top: 12px; }
+      .quota .group:first-of-type { margin-top: 8px; }
+      .quota .gname { font-size: 12px; font-weight: 600; }
+      .quota .gdesc { font-size: 11px; color: var(--muted); margin-top: 1px; }
+      .quota .bucket { margin-top: 8px; }
+      .quota .brow { display: flex; justify-content: space-between; font-size: 11px; color: var(--muted); }
+      .quota .brow b { color: var(--fg); font-weight: 600; }
+      .quota .bar { height: 5px; border-radius: 3px; background: color-mix(in oklab, var(--fg) 12%, transparent); margin-top: 4px; overflow: hidden; }
+      .quota .bar > i { display: block; height: 100%; border-radius: 3px; background: var(--ok); }
+      .quota .note { font-size: 11px; color: var(--muted); margin-top: 10px; }
+      textarea { width: 100%; margin-top: 10px; border: 1px solid var(--border); border-radius: 8px; padding: 8px 10px; background: var(--bg); color: var(--fg); font: 12px/1.4 ui-monospace, SFMono-Regular, Menlo, monospace; resize: vertical; }
+      textarea:focus { outline: 2px solid color-mix(in oklab, var(--accent) 45%, transparent); outline-offset: -1px; }
+      .imgout { margin-top: 12px; }
+      .imgout img { width: 100%; border-radius: 8px; border: 1px solid var(--border); display: block; }
+      .searchout { margin-top: 12px; font-size: 12px; }
+      .searchout .stext { white-space: pre-wrap; color: var(--fg); }
+      .searchout .src { margin-top: 8px; font-size: 11px; color: var(--muted); }
+      .searchout .src a { color: var(--ok); text-decoration: none; display: block; margin-top: 2px; word-break: break-all; }
+      .note { font-size: 11px; color: var(--muted); margin-top: 8px; }
+      .check { display: flex; align-items: center; gap: 8px; margin-top: 12px; font-size: 12px; cursor: pointer; }
+      .check input { accent-color: var(--accent); margin: 0; }
+    </style>
+  </head>
+  <body>
+    <div class="card">
+      <h2>Antigravity</h2>
+      <div class="status">
+        <span class="dot" id="dot"></span>
+        <span id="statusText">Checking…</span>
+      </div>
+      <div class="row">
+        <button id="signIn">Sign in with Google</button>
+        <button id="refresh" class="secondary">Refresh status</button>
+        <button id="signOut" class="secondary">Sign out</button>
+      </div>
+      <p class="error hidden" id="error"></p>
+      <div class="quota hidden" id="quota"></div>
+    </div>
+
+    <div class="card">
+      <h2>Generate image</h2>
+      <textarea id="imgPrompt" rows="2" placeholder="a pelican riding a bicycle"></textarea>
+      <div class="row">
+        <button id="imgGo">Generate</button>
+      </div>
+      <div class="imgout hidden" id="imgOut"></div>
+    </div>
+
+    <div class="card">
+      <h2>Web search</h2>
+      <textarea id="searchQuery" rows="2" placeholder="what is the latest Node.js LTS?"></textarea>
+      <div class="row">
+        <button id="searchGo">Search</button>
+      </div>
+      <div class="searchout hidden" id="searchOut"></div>
+    </div>
+
+    <div class="card">
+      <h2>Models</h2>
+      <p id="modelCount">Loading…</p>
+      <div class="row">
+        <button id="modelsRefresh">Refresh from server</button>
+      </div>
+      <label class="check" for="chatTools">
+        <input type="checkbox" id="chatTools" />
+        <span>Use image &amp; web search inside chat</span>
+      </label>
+      <p class="note">
+        With this on, just ask in the conversation: “draw a pelican riding a bicycle” or
+        “search the web for the latest Node.js LTS”. The model calls the tool itself.
+      </p>
+      <p class="note hidden" id="modelNote"></p>
+    </div>
+
+    <script>
+      // The host may re-inject this script ahead of its own DOM rewrite, so run
+      // the whole panel once the document is actually parsed.
+      const boot = () => {
+       try {
+        const applyAppearance = (appearance) => {
+          const base = appearance?.base;
+          document.documentElement.dataset.base =
+            base === "light" || base === "dark"
+              ? base
+              : window.matchMedia("(prefers-color-scheme: light)").matches
+                ? "light"
+                : "dark";
+        };
+        window.pluginBridge?.on("appearance:changed", applyAppearance);
+        window.pluginBridge
+          ?.invoke("app.getAppearance")
+          .then(applyAppearance)
+          .catch(() => applyAppearance(null));
+
+        const $ = (id) => document.getElementById(id);
+        const dot = $("dot");
+        const statusText = $("statusText");
+        const errorBox = $("error");
+        const signOutBtn = $("signOut");
+
+        function renderStatus(status, error) {
+          // The host re-wraps panel HTML for its chrome band, so every lookup is
+          // guarded: a missing node must never turn a status read into a crash.
+          const signedIn = /signed in/i.test(status || "");
+          if (dot) dot.classList.toggle("on", signedIn);
+          if (statusText) statusText.textContent = status || "Unknown";
+          if (signOutBtn) signOutBtn.disabled = !signedIn;
+          if (errorBox) {
+            if (error) {
+              errorBox.textContent = error;
+              errorBox.classList.remove("hidden");
+            } else {
+              errorBox.classList.add("hidden");
+            }
+          }
+        }
+        async function refresh() {
+          try {
+            const settings = await window.pluginBridge.invoke("antigravity.status");
+            // The host forwards unknown channels to the plugin, but a transport
+            // failure can still come back undefined - guard before reading.
+            if (!settings || typeof settings !== "object") {
+              renderStatus("Could not read status", "The plugin did not answer.");
+              return;
+            }
+            renderStatus(settings.accountStatus, settings.lastError);
+            const chatTools = $("chatTools");
+            if (chatTools) chatTools.checked = settings.chatTools !== false;
+          } catch (error) {
+            const message = error?.message ?? String(error);
+            // Surface the real reason instead of a generic label: this is the only
+            // place a user can see why sign-in state is unavailable.
+            renderStatus(`Could not read status: ${message}`, "");
+          }
+        }
+
+        const signInBtn = $("signIn");
+
+        if (signInBtn) {
+          signInBtn.addEventListener("click", async () => {
+            signInBtn.disabled = true;
+            try {
+              await window.pluginBridge.invoke("antigravity.signIn");
+              renderStatus("Sign-in opened in your browser. Finish it there.", "");
+            } catch (error) {
+              renderStatus("Could not start sign-in", String(error?.message ?? error));
+            } finally {
+              signInBtn.disabled = false;
+            }
+          });
+        }
+
+        if (signOutBtn) {
+          signOutBtn.addEventListener("click", async () => {
+            try {
+              await window.pluginBridge.invoke("antigravity.signOut");
+              await refresh();
+            } catch (error) {
+              renderStatus("Sign-out failed", String(error?.message ?? error));
+            }
+          });
+        }
+
+        // Sign-in finishes in the browser, which the panel cannot observe directly,
+      // so poll for a short while after opening instead of showing a stale
+      // "waiting" state. Polling stops on its own: an idle panel must not keep
+      // the plugin host process awake.
+      let pollTimer;
+      let pollDeadline = 0;
+      const startPolling = () => {
+        if (pollTimer) return;
+        pollDeadline = Date.now() + 60000;
+        pollTimer = setInterval(() => {
+          if (document.hidden || Date.now() > pollDeadline) {
+            stopPolling();
+            return;
+          }
+          void refresh();
+        }, 5000);
+      };
+      const stopPolling = () => {
+        if (pollTimer) clearInterval(pollTimer);
+        pollTimer = null;
+      };
+      document.addEventListener("visibilitychange", () => {
+        if (document.hidden) stopPolling();
+        else startPolling();
+      });
+      window.addEventListener("beforeunload", stopPolling);
+      // --- quota ------------------------------------------------------------
+      const quotaBox = $("quota");
+
+      const pct = (fraction) => `${Math.max(0, Math.min(100, Math.round(fraction * 100)))}%`;
+
+      function resetLabel(resetTime) {
+        if (!resetTime) return "";
+        const diff = new Date(resetTime).getTime() - Date.now();
+        if (!Number.isFinite(diff) || diff <= 0) return "refreshes soon";
+        const h = Math.floor(diff / 3600000);
+        const d = Math.floor(h / 24);
+        if (d >= 1) return `refreshes in ${d}d ${h % 24}h`;
+        const m = Math.floor((diff % 3600000) / 60000);
+        return `refreshes in ${h}h ${m}m`;
+      }
+
+      function renderQuota(data) {
+        const groups = data?.groups || [];
+        if (!groups.length) {
+          quotaBox.innerHTML = '<div class="note">No quota information returned.</div>';
+          quotaBox.classList.remove("hidden");
+          return;
+        }
+        const html = groups
+          .map((g) => {
+            const buckets = (g.buckets || [])
+              .map((b) => {
+                const f = typeof b.remainingFraction === "number" ? b.remainingFraction : 0;
+                return (
+                  '<div class="bucket">' +
+                  `<div class="brow"><span>${escapeText(b.displayName)}</span>` +
+                  `<b>${pct(f)} remaining</b></div>` +
+                  '<div class="bar"><i style="width:' + pct(f) + '"></i></div>' +
+                  (b.resetTime ? `<div class="brow" style="margin-top:3px"><span></span><span>${escapeText(resetLabel(b.resetTime))}</span></div>` : "") +
+                  "</div>"
+                );
+              })
+              .join("");
+            return (
+              '<div class="group">' +
+              `<div class="gname">${escapeText(g.displayName)}</div>` +
+              (g.description ? `<div class="gdesc">${escapeText(g.description)}</div>` : "") +
+              buckets +
+              "</div>"
+            );
+          })
+          .join("");
+        quotaBox.innerHTML = "<h3>Quota</h3>" + html;
+        quotaBox.classList.remove("hidden");
+      }
+
+      function escapeText(v) {
+        return String(v ?? "").replace(/[&<>"']/g, (c) =>
+          ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c],
+        );
+      }
+
+      async function loadQuota() {
+        try {
+          const data = await window.pluginBridge.invoke("antigravity.quota");
+          renderQuota(data);
+        } catch (error) {
+          quotaBox.innerHTML = `<div class="note">Quota unavailable: ${escapeText(error?.message ?? error)}</div>`;
+          quotaBox.classList.remove("hidden");
+        }
+      }
+
+      $("refresh").addEventListener("click", async () => {
+        await refresh();
+        await loadQuota();
+      });
+
+      // Load quota alongside the first status read so the panel is never empty.
+      // --- image ------------------------------------------------------------
+      const imgOut = $("imgOut");
+      $("imgGo").addEventListener("click", async () => {
+        const prompt = ($("imgPrompt").value || "").trim();
+        if (!prompt) { renderStatus("Enter a prompt first.", ""); return; }
+        imgOut.classList.add("hidden");
+        try {
+          const r = await window.pluginBridge.invoke("antigravity.image", { prompt });
+          imgOut.innerHTML = `<img alt="generated" src="data:${r.mimeType};base64,${r.b64}">`;
+          imgOut.classList.remove("hidden");
+        } catch (error) {
+          renderStatus("Image failed", String(error?.message ?? error));
+        }
+      });
+
+      // --- search -----------------------------------------------------------
+      const searchOut = $("searchOut");
+      $("searchGo").addEventListener("click", async () => {
+        const query = ($("searchQuery").value || "").trim();
+        if (!query) { renderStatus("Enter a query first.", ""); return; }
+        searchOut.classList.add("hidden");
+        try {
+          const r = await window.pluginBridge.invoke("antigravity.search", { query });
+          const srcs = (r.sources || [])
+            .slice(0, 6)
+            .map((x) => `<a href="${escapeAttr(x.url)}">${escapeText(x.title || x.url)}</a>`)
+            .join("");
+          searchOut.innerHTML =
+            `<div class="stext">${escapeText(r.text || "(no text)")}</div>` +
+            (srcs ? `<div class="src">${srcs}</div>` : "");
+          searchOut.classList.remove("hidden");
+        } catch (error) {
+          renderStatus("Search failed", String(error?.message ?? error));
+        }
+      });
+
+      function escapeAttr(v) {
+        return String(v ?? "").replace(/[&<>"']/g, (c) =>
+          ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c],
+        );
+      }
+      // --- models -----------------------------------------------------------
+      const modelCount = $("modelCount");
+      const modelNote = $("modelNote");
+      // Always through the host: the panel frame cannot reach the proxy port
+      // directly, and the picker itself is built from the manifest snapshot.
+      async function loadModelCount() {
+        try {
+          const d = await window.pluginBridge.invoke("antigravity.models");
+          const image = d.imageCount ? `, ${d.imageCount} image` : "";
+          modelCount.textContent = `${d.count} models (${d.chatCount} chat${image}).`;
+        } catch {
+          modelCount.textContent = "Model list unavailable.";
+        }
+      }
+      $("modelsRefresh").addEventListener("click", async () => {
+        modelNote.classList.add("hidden");
+        try {
+          const r = await window.pluginBridge.invoke("antigravity.refreshModels");
+          await loadModelCount();
+          // `count` is the server's model families, not what the picker lists,
+          // so report both or a healthy refresh reads like data loss.
+          const families = r.count ?? 0;
+          const total = r.manifestModels ?? families;
+          modelNote.textContent = r.reloadRequired
+            ? `Refreshed ${families} model families from the server; the picker lists ${total} models. Reload the plugin to update the picker.`
+            : `Refreshed ${families} model families from the server; the picker lists ${total} models.`;
+          modelNote.classList.remove("hidden");
+        } catch (error) {
+          modelNote.textContent = String(error?.message ?? error);
+          modelNote.classList.remove("hidden");
+        }
+      });
+      const chatToolsBox = $("chatTools");
+      chatToolsBox.addEventListener("change", async () => {
+        try {
+          await window.pluginBridge.invoke("antigravity.setChatTools", { enabled: chatToolsBox.checked });
+        } catch (error) {
+          renderStatus("Could not save the chat tool setting", String(error?.message ?? error));
+        }
+      });
+      // Each card is independent: one failing invoke must not take the whole
+      // panel down, which is what a bare throw here used to do (silent hang on
+      // "Checking…" with no quota and no model count).
+      const settle = (promise, label) => {
+        Promise.resolve(promise).catch((error) => {
+          renderStatus(`${label}: ${error?.message ?? error}`, "");
+        });
+      };
+      settle(loadModelCount(), "Model list unavailable");
+      settle(refresh(), "Could not read status");
+      startPolling();
+      if (!/not signed in/i.test(statusText.textContent || "")) settle(loadQuota(), "Quota unavailable");
+      } catch (error) {
+        // A panel that dies silently looks like a hang; say what broke instead.
+        try {
+          renderStatus(`Panel error: ${error?.message ?? error}`, "");
+        } catch {
+          // the status node itself may be what failed
+        }
+      }
+      };
+
+      if (document.readyState === "loading") {
+        document.addEventListener("DOMContentLoaded", boot, { once: true });
+      } else {
+        boot();
+      }
+    </script>
+  </body>
+</html>

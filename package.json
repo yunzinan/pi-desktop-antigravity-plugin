@@ -1,0 +1,35 @@
+{
+  "name": "pi-desktop-antigravity-plugin",
+  "version": "0.12.0",
+  "private": true,
+  "description": "Google Antigravity / Cloud Code Assist as a native PI-Desktop provider: chat, in-chat image generation, grounded web search, quota monitoring.",
+  "license": "MIT",
+  "author": "yunzinan",
+  "homepage": "https://github.com/yunzinan/pi-desktop-antigravity-plugin",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/yunzinan/pi-desktop-antigravity-plugin.git"
+  },
+  "bugs": {
+    "url": "https://github.com/yunzinan/pi-desktop-antigravity-plugin/issues"
+  },
+  "keywords": [
+    "pi-desktop",
+    "pi-plugin",
+    "antigravity",
+    "cloud-code-assist",
+    "gemini",
+    "claude",
+    "gpt-oss",
+    "provider"
+  ],
+  "main": "main.cjs",
+  "dependencies": {
+    "undici": "^8.12.3"
+  },
+  "comment:undici": "Vendored under node_modules/ on purpose: the plugin is installed as a package, not through npm install, and the app's Node process needs a ProxyAgent to reach Google behind a system proxy. See README.",
+  "scripts": {
+    "pack": "python3 pack.py",
+    "pack:check": "python3 pack.py --check"
+  }
+}
