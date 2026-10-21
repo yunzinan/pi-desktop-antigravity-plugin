@@ -7,3 +7,7 @@ dist/
 *.log
 .idea/
 .vscode/
+
+# python bytecode
+__pycache__/
+*.pyc
