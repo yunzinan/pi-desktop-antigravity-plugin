@@ -34,8 +34,14 @@ OUT_DIR = os.path.join(SRC, "dist")
 # Paths (relative to the package root) that must never ship.
 EXCLUDE_DIRS = {".git", "dist", "__MACOSX"}
 EXCLUDE_FILES = {".DS_Store", "pack.py", ".gitignore"}
-EXCLUDE_SUFFIXES = (".d.ts", ".map", ".piplug")
-EXCLUDE_PATH_PARTS = {"docs"}
+EXCLUDE_SUFFIXES = (".d.ts", ".map", ".piplug", ".png")
+# The PNG renders of the architecture figure stay in the repo for the GitHub
+# README (which does not render SVG); the package ships the 17 KB SVG instead,
+# because the market serves its own readmeMarkdown and screenshots and never
+# resolves image paths inside the .piplug.
+# Only inside a dependency: the repo's own top-level docs/ ships (it holds the
+# architecture figure the README links to).
+EXCLUDE_DEP_DIRS = {"docs"}
 
 # Files the manifest points at; the pack fails loudly if one is missing.
 REQUIRED = ("manifest.json", "main.cjs", "proxy.cjs", "renderer/index.html")
@@ -44,7 +50,9 @@ REQUIRED = ("manifest.json", "main.cjs", "proxy.cjs", "renderer/index.html")
 def collect():
     files = []
     for root, dirs, names in os.walk(SRC):
-        dirs[:] = [d for d in dirs if d not in EXCLUDE_DIRS and d not in EXCLUDE_PATH_PARTS]
+        inside_dep = os.path.relpath(root, SRC).startswith("node_modules")
+        skip = EXCLUDE_DIRS | (EXCLUDE_DEP_DIRS if inside_dep else set())
+        dirs[:] = [d for d in dirs if d not in skip]
         for name in names:
             if name in EXCLUDE_FILES or name.endswith(EXCLUDE_SUFFIXES):
                 continue

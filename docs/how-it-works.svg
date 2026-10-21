@@ -1,0 +1,216 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1240 1104" width="1240" height="1104" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif">
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#2563eb"/>
+    </marker>
+    <marker id="arg" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#059669"/>
+    </marker>
+    <marker id="arp" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#7c3aed"/>
+    </marker>
+    <linearGradient id="hd" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#2563eb"/><stop offset="1" stop-color="#7c3aed"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="1240" height="1104" fill="#ffffff"/>
+
+  <!-- ================= header ================= -->
+  <rect x="0" y="0" width="1240" height="6" fill="url(#hd)"/>
+  <text x="36" y="46" font-size="25" font-weight="680" fill="#111827" letter-spacing="-0.4">How the Antigravity plugin works</text>
+  <text x="36" y="72" font-size="14" fill="#5b6672">PI-Desktop speaks the OpenAI wire protocol. Antigravity speaks a Google-specific envelope. A local proxy bridges the two.</text>
+
+  <!-- ================= zone 1 ================= -->
+  <text x="36" y="112" font-size="11" font-weight="700" fill="#2563eb" letter-spacing="1.1">1 · RUNTIME PATH</text>
+
+  <!-- == column A : PI-Desktop == -->
+  <rect x="32" y="126" width="290" height="330" rx="12" fill="#f8fafc" stroke="#cbd5e1" stroke-width="1.5"/>
+  <rect x="32" y="126" width="290" height="40" rx="12" fill="#e8eefc"/>
+  <rect x="32" y="154" width="290" height="12" fill="#e8eefc"/>
+  <text x="48" y="152" font-size="15" font-weight="680" fill="#1e3a8a">PI-Desktop</text>
+  <text x="48" y="168" font-size="10.5" fill="#64748b">the host application</text>
+
+  <text x="48" y="198" font-size="12.5" font-weight="620" fill="#111827">Chat UI &amp; model picker</text>
+  <text x="48" y="220" font-size="12" fill="#4b5563">provider</text>
+  <text x="122" y="220" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="11.5" fill="#7c3aed">antigravity</text>
+  <text x="48" y="240" font-size="12" fill="#4b5563">protocol</text>
+  <text x="110" y="240" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="11.5" fill="#7c3aed">openai_compatible</text>
+  <text x="48" y="260" font-size="12" fill="#4b5563">authKind</text>
+  <text x="112" y="260" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="11.5" fill="#7c3aed">oauth</text>
+
+  <rect x="44" y="276" width="266" height="46" rx="8" fill="#ffffff" stroke="#cbd5e1"/>
+  <text x="56" y="294" font-size="11" fill="#64748b">baseUrl</text>
+  <text x="56" y="311" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="11.5" fill="#b91c1c">127.0.0.1:51122/v1</text>
+
+  <text x="48" y="348" font-size="12.5" font-weight="620" fill="#111827">Sidebar panel</text>
+  <text x="48" y="366" font-size="11.5" fill="#5b6672">status · quota · image</text>
+  <text x="48" y="382" font-size="11.5" fill="#5b6672">search · models</text>
+  <text x="48" y="404" font-size="11" fill="#94a3b8">declares its own tools,</text>
+  <text x="48" y="419" font-size="11" fill="#94a3b8">including GenerateImages</text>
+  <text x="48" y="440" font-size="11" fill="#94a3b8">→ see section 2</text>
+
+  <!-- == arrow A -> B == -->
+  <path d="M322,240 L398,240" stroke="#2563eb" stroke-width="2" fill="none" marker-end="url(#ar)"/>
+  <text x="360" y="222" font-size="10" font-weight="620" fill="#2563eb" text-anchor="middle">OpenAI</text>
+  <text x="360" y="235" font-size="10" font-weight="620" fill="#2563eb" text-anchor="middle">chat/completions</text>
+  <text x="360" y="262" font-size="9.5" fill="#64748b" text-anchor="middle">HTTP · loopback</text>
+
+  <!-- == column B : the plugin == -->
+  <rect x="402" y="126" width="350" height="330" rx="12" fill="#faf5ff" stroke="#c4b5fd" stroke-width="1.5"/>
+  <rect x="402" y="126" width="350" height="40" rx="12" fill="#ede9fe"/>
+  <rect x="402" y="154" width="350" height="12" fill="#ede9fe"/>
+  <text x="418" y="152" font-size="15" font-weight="680" fill="#4c1d95">This plugin</text>
+  <text x="418" y="168" font-size="10.5" fill="#7c6ba8">runs on localhost</text>
+
+  <rect x="418" y="182" width="318" height="82" rx="8" fill="#ffffff" stroke="#ddd6fe"/>
+  <text x="432" y="202" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="12.5" font-weight="680" fill="#4c1d95">main.cjs</text>
+  <text x="432" y="221" font-size="11.5" fill="#4b5563">OAuth · PKCE + loopback :51121</text>
+  <text x="432" y="238" font-size="11.5" fill="#4b5563">token refresh · panel channels</text>
+  <text x="432" y="255" font-size="11.5" fill="#4b5563">commands · proxy lifecycle</text>
+
+  <rect x="418" y="272" width="318" height="82" rx="8" fill="#ffffff" stroke="#a78bfa" stroke-width="1.5"/>
+  <text x="432" y="292" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="12.5" font-weight="680" fill="#4c1d95">proxy.cjs</text>
+  <text x="432" y="311" font-size="11.5" fill="#4b5563">OpenAI ↔ Cloud Code Assist</text>
+  <text x="432" y="328" font-size="11.5" fill="#4b5563">tool bridging · serves :51122</text>
+  <text x="432" y="345" font-size="11.5" fill="#4b5563">image · search · quota · models</text>
+
+  <rect x="418" y="362" width="318" height="46" rx="8" fill="#ffffff" stroke="#ddd6fe"/>
+  <text x="432" y="382" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="12" font-weight="680" fill="#4c1d95">renderer/index.html</text>
+  <text x="432" y="400" font-size="11.5" fill="#5b6672">the sidebar panel</text>
+
+  <text x="418" y="432" font-size="11" fill="#7c6ba8">panel calls go through the host</text>
+  <text x="418" y="447" font-size="11" fill="#7c6ba8">bridge, never straight to :51122</text>
+
+  <!-- == arrow B -> C == -->
+  <path d="M752,240 L828,240" stroke="#059669" stroke-width="2" fill="none" marker-end="url(#arg)"/>
+  <text x="790" y="222" font-size="10" font-weight="620" fill="#059669" text-anchor="middle">translated</text>
+  <text x="790" y="235" font-size="10" font-weight="620" fill="#059669" text-anchor="middle">envelope</text>
+  <text x="790" y="262" font-size="9.5" fill="#64748b" text-anchor="middle">HTTPS</text>
+
+  <!-- == column C : Google == -->
+  <rect x="832" y="126" width="376" height="330" rx="12" fill="#f0fdf4" stroke="#86efac" stroke-width="1.5"/>
+  <rect x="832" y="126" width="376" height="40" rx="12" fill="#dcfce7"/>
+  <rect x="832" y="154" width="376" height="12" fill="#dcfce7"/>
+  <text x="848" y="152" font-size="15" font-weight="680" fill="#14532d">Google Cloud Code Assist</text>
+  <text x="848" y="168" font-size="10.5" fill="#4d7c5f">on the signed-in account's quota</text>
+
+  <text x="848" y="198" font-size="11" font-weight="700" fill="#166534" letter-spacing="0.6">ENDPOINTS USED</text>
+  <text x="848" y="217" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="10.5" fill="#14532d">v1internal:streamGenerateContent</text>
+  <text x="848" y="234" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="10.5" fill="#14532d">v1internal:generateContent</text>
+  <text x="848" y="251" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="10.5" fill="#14532d">v1internal:fetchAvailableModels</text>
+  <text x="848" y="268" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="10.5" fill="#14532d">v1internal:retrieveUserQuotaSummary</text>
+
+  <rect x="844" y="284" width="352" height="52" rx="8" fill="#ffffff" stroke="#bbf7d0"/>
+  <text x="858" y="303" font-size="11.5" font-weight="620" fill="#14532d">Two hosts, tried in order</text>
+  <text x="858" y="320" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="10" fill="#4d7c5f">daily-cloudcode-pa.sandbox.googleapis.com</text>
+  <text x="858" y="334" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="10" fill="#4d7c5f">cloudcode-pa.googleapis.com</text>
+
+  <text x="848" y="366" font-size="11.5" fill="#4d7c5f">Models: Gemini 4 Argon · Gemini 3.8 Flash</text>
+  <text x="848" y="383" font-size="11.5" fill="#4d7c5f">Claude Opus / Sonnet 5.5 · GPT-OSS 120B</text>
+  <text x="848" y="400" font-size="11.5" fill="#4d7c5f">gemini-3.1-flash-image</text>
+
+  <rect x="844" y="416" width="352" height="28" rx="8" fill="#fef9c3" stroke="#fde047"/>
+  <text x="858" y="434" font-size="10.5" fill="#854d0e">Image model has its own limit, not shown by the quota API</text>
+
+  <!-- == return arrow == -->
+  <path d="M828,452 L752,452" stroke="#059669" stroke-width="1.6" stroke-dasharray="5 4" fill="none" marker-end="url(#arg)"/>
+  <text x="790" y="470" font-size="9.5" fill="#64748b" text-anchor="middle">SSE stream back</text>
+
+  <!-- proxy hop note -->
+  <rect x="402" y="466" width="806" height="50" rx="8" fill="#f1f5f9" stroke="#cbd5e1"/>
+  <text x="418" y="486" font-size="11.5" fill="#475569">Every upstream call goes through an <tspan font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-weight="620">undici ProxyAgent</tspan> → the system proxy.</text>
+  <text x="418" y="504" font-size="11.5" fill="#475569">Node's <tspan font-family="ui-monospace, SFMono-Regular, Menlo, monospace">fetch</tspan> ignores the macOS proxy, so direct Google calls time out behind Clash.</text>
+
+  <!-- ================= zone 2 ================= -->
+  <text x="36" y="544" font-size="11" font-weight="700" fill="#7c3aed" letter-spacing="1.1">2 · IN-CHAT TOOLS — WHY THEY ARE INTERCEPTED</text>
+
+  <rect x="32" y="558" width="1176" height="252" rx="12" fill="#fdf4ff" stroke="#e9d5ff" stroke-width="1.5"/>
+
+  <!-- step 1 -->
+  <rect x="52" y="582" width="262" height="120" rx="10" fill="#ffffff" stroke="#e9d5ff"/>
+  <circle cx="72" cy="602" r="11" fill="#7c3aed"/>
+  <text x="72" y="607" font-size="12" font-weight="700" fill="#ffffff" text-anchor="middle">1</text>
+  <text x="92" y="606" font-size="12.5" font-weight="680" fill="#111827">The host declares a tool</text>
+  <text x="68" y="630" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="11.5" fill="#7c3aed">GenerateImages</text>
+  <text x="68" y="649" font-size="11" fill="#5b6672">The model reaches for it far</text>
+  <text x="68" y="664" font-size="11" fill="#5b6672">more readily than for a tool</text>
+  <text x="68" y="679" font-size="11" fill="#5b6672">a provider invents itself.</text>
+
+  <!-- step 2 -->
+  <rect x="340" y="582" width="262" height="120" rx="10" fill="#ffffff" stroke="#e9d5ff"/>
+  <circle cx="360" cy="602" r="11" fill="#7c3aed"/>
+  <text x="360" y="607" font-size="12" font-weight="700" fill="#ffffff" text-anchor="middle">2</text>
+  <text x="380" y="606" font-size="12.5" font-weight="680" fill="#111827">The proxy intercepts it</text>
+  <text x="356" y="630" font-size="11" fill="#5b6672">The call is never forwarded</text>
+  <text x="356" y="645" font-size="11" fill="#5b6672">to the app, so the host's</text>
+  <text x="356" y="660" font-size="11" fill="#5b6672">implementation never runs.</text>
+  <text x="356" y="679" font-size="11" fill="#5b6672">Host tools pass through</text>
+  <text x="356" y="694" font-size="11" fill="#5b6672">untouched (bash, read, write).</text>
+
+  <!-- step 3 -->
+  <rect x="628" y="582" width="262" height="120" rx="10" fill="#ffffff" stroke="#e9d5ff"/>
+  <circle cx="648" cy="602" r="11" fill="#7c3aed"/>
+  <text x="648" y="607" font-size="12" font-weight="700" fill="#ffffff" text-anchor="middle">3</text>
+  <text x="668" y="606" font-size="12.5" font-weight="680" fill="#111827">It runs on Antigravity</text>
+  <text x="644" y="630" font-size="11" fill="#5b6672">Same image model, same</text>
+  <text x="644" y="645" font-size="11" fill="#5b6672">quota — just reached without</text>
+  <text x="644" y="660" font-size="11" fill="#5b6672">the host's provider gate.</text>
+  <text x="644" y="679" font-size="11" fill="#5b6672">Result goes back as a</text>
+  <text x="644" y="694" font-size="11" fill="#5b6672">functionResponse.</text>
+
+  <!-- step 4 -->
+  <rect x="916" y="582" width="272" height="120" rx="10" fill="#ffffff" stroke="#e9d5ff"/>
+  <circle cx="936" cy="602" r="11" fill="#059669"/>
+  <text x="936" y="607" font-size="12" font-weight="700" fill="#ffffff" text-anchor="middle">4</text>
+  <text x="956" y="606" font-size="12.5" font-weight="680" fill="#111827">The user sees the image</text>
+  <text x="932" y="630" font-size="11" fill="#5b6672">The model writes its answer,</text>
+  <text x="932" y="645" font-size="11" fill="#5b6672">and the proxy appends the</text>
+  <text x="932" y="660" font-size="11" fill="#5b6672">pixels as an inline markdown</text>
+  <text x="932" y="675" font-size="11" fill="#5b6672">data URI — no file, no upload.</text>
+  <text x="932" y="694" font-size="11" fill="#5b6672">finish_reason: stop</text>
+
+  <path d="M314,642 L336,642" stroke="#7c3aed" stroke-width="2" fill="none" marker-end="url(#arp)"/>
+  <path d="M602,642 L624,642" stroke="#7c3aed" stroke-width="2" fill="none" marker-end="url(#arp)"/>
+  <path d="M890,642 L912,642" stroke="#7c3aed" stroke-width="2" fill="none" marker-end="url(#arp)"/>
+
+  <!-- why box -->
+  <rect x="52" y="716" width="1136" height="76" rx="10" fill="#fffbeb" stroke="#fcd34d"/>
+  <text x="70" y="740" font-size="12" font-weight="700" fill="#92400e">Why not just set Antigravity as the image model in Settings?</text>
+  <text x="70" y="760" font-size="11.5" fill="#78350f">Because the host's own check refuses it: <tspan font-family="ui-monospace, SFMono-Regular, Menlo, monospace">imageModelOfferedByProvider()</tspan> returns false for every OAuth provider</text>
+  <text x="70" y="777" font-size="11.5" fill="#78350f">that is not the OpenAI Codex vendor. The call would come back <tspan font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-weight="620">IMAGE_NOT_CONFIGURED</tspan> and the model would</text>
+  <text x="70" y="789" font-size="11.5" fill="#78350f">simply tell the user to go and configure one. Intercepting is the only path that works.</text>
+
+  <!-- ================= zone 3 ================= -->
+  <text x="36" y="846" font-size="11" font-weight="700" fill="#059669" letter-spacing="1.1">3 · DETAILS THAT MATTER</text>
+
+  <rect x="32" y="860" width="574" height="222" rx="12" fill="#f8fafc" stroke="#cbd5e1"/>
+  <text x="52" y="886" font-size="12.5" font-weight="680" fill="#111827">Tool calls must echo a signature</text>
+  <text x="52" y="906" font-size="11.5" fill="#4b5563">Cloud Code Assist issues each functionCall with a</text>
+  <text x="52" y="923" font-size="11.5" fill="#4b5563">thoughtSignature. Send the follow-up request without it</text>
+  <text x="52" y="940" font-size="11.5" fill="#4b5563">and the endpoint answers 400. The proxy carries it over.</text>
+  <text x="52" y="968" font-size="12.5" font-weight="680" fill="#111827">Two tool sets, one conversation</text>
+  <text x="52" y="988" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="11" fill="#7c3aed">antigravity_generate_image</text>
+  <text x="52" y="1004" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="11" fill="#7c3aed">antigravity_web_search</text>
+  <text x="230" y="988" font-size="11" fill="#5b6672">declared by the proxy</text>
+  <text x="230" y="1004" font-size="11" fill="#5b6672">(Gemini function declarations)</text>
+  <text x="52" y="1026" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="11" fill="#b91c1c">GenerateImages</text>
+  <text x="230" y="1026" font-size="11" fill="#5b6672">declared by the host, run here</text>
+  <text x="52" y="1052" font-size="11" fill="#94a3b8">Either path reaches the same image model.</text>
+  <text x="52" y="1070" font-size="11" fill="#94a3b8">The panel toggle turns both off.</text>
+
+  <rect x="634" y="860" width="574" height="222" rx="12" fill="#f8fafc" stroke="#cbd5e1"/>
+  <text x="654" y="886" font-size="12.5" font-weight="680" fill="#111827">Credentials belong to the host</text>
+  <text x="654" y="906" font-size="11.5" fill="#4b5563">The token PI-Desktop sends is preferred, and the host</text>
+  <text x="654" y="923" font-size="11.5" fill="#4b5563">refreshes it. <tspan font-family="ui-monospace, SFMono-Regular, Menlo, monospace">~/.pi/agent</tspan> is only a fallback, so the</text>
+  <text x="654" y="940" font-size="11.5" fill="#4b5563">app never has to re-authenticate.</text>
+  <text x="654" y="968" font-size="12.5" font-weight="680" fill="#111827">Token exchange has a fallback</text>
+  <text x="654" y="988" font-size="11.5" fill="#4b5563"><tspan font-family="ui-monospace, SFMono-Regular, Menlo, monospace">www.googleapis.com/oauth2/v4/token</tspan> is tried first:</text>
+  <text x="654" y="1005" font-size="11.5" fill="#4b5563">oauth2.googleapis.com is blocked on some networks.</text>
+  <text x="654" y="1033" font-size="12.5" font-weight="680" fill="#111827">Model discovery merges</text>
+  <text x="654" y="1053" font-size="11.5" fill="#4b5563">Thinking variants collapse into families server-side;</text>
+  <text x="654" y="1070" font-size="11.5" fill="#4b5563">the manifest keeps the fine-grained entries.</text>
+
+  <!-- footer -->
+  <text x="36" y="1100" font-size="10.5" fill="#94a3b8">Antigravity for PI-Desktop · unofficial integration, not affiliated with or endorsed by Google</text>
+</svg>

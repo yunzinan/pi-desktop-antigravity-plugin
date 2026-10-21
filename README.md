@@ -32,6 +32,11 @@ checkbox (on by default) controls whether the model is offered them at all.
 
 ## Architecture
 
+![How the plugin works](docs/how-it-works.png)
+
+*Editable source: [`docs/how-it-works.svg`](docs/how-it-works.svg) (also available
+at 2x as `docs/how-it-works@2x.png`).*
+
 ```
 PI-Desktop ──OpenAI chat/completions──▶ 127.0.0.1:51122 ──▶ Cloud Code Assist
    (provider)                            (this plugin)        v1internal:*
